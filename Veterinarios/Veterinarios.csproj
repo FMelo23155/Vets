@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Veterinarios-BAD5775F-DF94-4EC8-AB91-F907C8448EE3</UserSecretsId>
   </PropertyGroup>
