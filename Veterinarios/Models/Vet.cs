@@ -15,11 +15,14 @@ namespace Veterinarios.Models {
         /// PK for vets
         /// </summary>
         public int Id { get; set; }
+        [Required]
+
 
         /// <summary>
         /// Name of vet
         /// </summary>
         public string Name { get; set; }
+        [Required]
 
         /// <summary>
         /// Name of file that has the vet photo
@@ -30,6 +33,7 @@ namespace Veterinarios.Models {
         /// Professional license of vet
         /// </summary>
         [Display(Name = "Professional License")]
+        [Required]
         public string ProfessionalLicense { get; set; }
 
         public ICollection<Appointment> Appointment { get; set; }

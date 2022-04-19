@@ -113,20 +113,40 @@ namespace Veterinarios.Controllers
 
             // validate if data provided by user is good...
             if (ModelState.IsValid) {
-                //add vet data to database
-                _context.Add(vet);
-                // commit
-                await _context.SaveChangesAsync();
+                try {
+                    //add vet data to database
+                    _context.Add(vet);
+                    // commit
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception) {
+                    //if the code arrives here, something wrong has happened
+                    // we must fix the error, or at least report it
 
+                    //add a model error to our code
+                    ModelState.AddModelError("", "something went wrong! I can´t store data on database.");
+                    // eventually, before sending control to View7
+                    // report error. For instance, write a message on disc
+                    // or send an email to admin
+
+                    //send control to View
+                    return View(vet);
+                }
                 //save image file to disk
                 //***************************************
-                //ask the server what address it wants to use
-                string addressToStoreFile = _webHostEnvironment.WebRootPath;
-                string newImageLocalization = Path.Combine(addressToStoreFile, "Photos", vet.Photo);
-                // save image file to disk
-                using var stream = new FileStream(newImageLocalization, FileMode.Create);
-                await newPhotoVet.CopyToAsync(stream);
-
+                if (newPhotoVet == null) {
+                    //ask the server what address it wants to use
+                    string addressToStoreFile = _webHostEnvironment.WebRootPath;
+                    string newImageLocalization = Path.Combine(addressToStoreFile, "Photos");
+                    //see if the folder 'Photos' exists
+                    if(!Directory.Exists(newImageLocalization)) {
+                        Directory.CreateDirectory(newImageLocalization);
+                    }
+                    // save image file to disk
+                    newImageLocalization = Path.Combine(newImageLocalization, vet.Photo);
+                    using var stream = new FileStream(newImageLocalization, FileMode.Create);
+                    await newPhotoVet.CopyToAsync(stream);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -136,14 +156,12 @@ namespace Veterinarios.Controllers
         // GET: Vets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
+            if (id == null) {
                 return NotFound();
             }
 
             var vet = await _context.Vets.FindAsync(id);
-            if (vet == null)
-            {
+            if (vet == null) {
                 return NotFound();
             }
             return View(vet);
@@ -156,26 +174,20 @@ namespace Veterinarios.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Photo,ProfessionalLicense")] Vet vet)
         {
-            if (id != vet.Id)
-            {
+            if (id != vet.Id) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            if (ModelState.IsValid) {
+                try {
                     _context.Update(vet);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VetExists(vet.Id))
-                    {
+                catch (DbUpdateConcurrencyException) {
+                    if (!VetExists(vet.Id)) {
                         return NotFound();
                     }
-                    else
-                    {
+                    else {
                         throw;
                     }
                 }
