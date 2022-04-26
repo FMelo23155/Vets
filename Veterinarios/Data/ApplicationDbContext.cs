@@ -18,6 +18,7 @@ namespace Veterinarios.Data {
         /// </summary>
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
             // imports the previous execution of this method
             base.OnModelCreating(modelBuilder);
 

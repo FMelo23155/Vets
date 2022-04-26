@@ -15,14 +15,16 @@ namespace Veterinarios.Models {
         /// PK for vets
         /// </summary>
         public int Id { get; set; }
- 
+
 
 
         /// <summary>
         /// Name of vet
         /// </summary>
-        public string Name { get; set; }
+        /// 
         [Required]
+        public string Name { get; set; }
+        
 
         /// <summary>
         /// Name of file that has the vet photo
