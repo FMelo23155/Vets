@@ -15,7 +15,7 @@ namespace Veterinarios.Models {
         /// PK for vets
         /// </summary>
         public int Id { get; set; }
-        [Required]
+ 
 
 
         /// <summary>
