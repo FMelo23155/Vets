@@ -1,0 +1,52 @@
+﻿@model Veterinarios.Models.Vet
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Vet</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* if we want to give 'memmory' to our program
+                we can use this strategie
+            *@
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Photo" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfessionalLicense" class="control-label"></label>
+                <input asp-for="ProfessionalLicense" class="form-control" />
+                <span asp-validation-for="ProfessionalLicense" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label"></label>
+                <input type="file" name="newPhotoVet" class="form-control" accept=".jpg,.png"/>
+                @*
+                    we need a <input type="file" to send files,
+                    instead of <input type="text" which only send text
+                *@
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

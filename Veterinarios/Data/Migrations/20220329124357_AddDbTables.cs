@@ -86,13 +86,13 @@ namespace Veterinarios.Data.Migrations
                         column: x => x.AnimalFK,
                         principalTable: "Animals",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Appointments_Vets_VetFK",
                         column: x => x.VetFK,
                         principalTable: "Vets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
