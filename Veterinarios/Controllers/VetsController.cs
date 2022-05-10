@@ -157,13 +157,18 @@ namespace Veterinarios.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) {
-                return NotFound();
+                return RedirectToAction("Index");
             }
 
             var vet = await _context.Vets.FindAsync(id);
             if (vet == null) {
-                return NotFound();
+                return RedirectToAction("Index");
             }
+
+            // vou criar uma 'var de sessão' para guardar o ID do médico
+            // cujos dados vao ser editados
+            HttpContext.Session.SetInt32("VetID", vet.Id);
+
             return View(vet);
         }
 
@@ -176,6 +181,39 @@ namespace Veterinarios.Controllers
             if (id != vet.Id) {
                 return NotFound();
             }
+
+            /*  before we start editing Vet's, we need to ensure that data is good
+             *  so, we:
+             *      - read the 'session variable'
+             *      - compare it with the data that the browser provided
+             *       if it is different, we have a problem...
+             */
+
+            var VetsIDPrevioeslyStored = HttpContext.Session.GetInt32("VetID");
+
+            /*  if the VetsIDPrevioeslyStored is null, this means:
+             *      - we are accessing to app's method by external tools
+             *      - we spend more time than allowed
+             */
+
+            if (VetsIDPrevioeslyStored == null) {
+                //  what we need to do ?
+                //we must decide...
+
+                ModelState.AddModelError("", "You have spent more time than allowed...");
+                return View(vet);
+
+                //return RedirectionAction("Index");
+            }
+             
+            if(VetsIDPrevioeslyStored != vet.Id)    {
+                // if we enter here, something is wrong
+                // what we need to do ???
+
+                return RedirectToAction("Index");
+            }
+
+
 
             /* if you do not have a new file, nothing is done
              * if a new photo is supplied, you should change it 
